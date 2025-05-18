@@ -13,6 +13,9 @@
 			<StackPanel>
 				<!-- Tamaño de cuadrícula -->
 				<TextBlock Text="Tamaño de cuadrícula:" FontWeight="Bold" Margin="0,0,0,10"/>
+				<Button Content="Guardar" Margin="0,10" Padding="10,5" Click="SaveButton_Click"/>
+				<Button Content="Abrir" Margin="0,10" Padding="10,5" Click="LoadButton_Click"/>
+
 
 				<ComboBox x:Name="GridSizeComboBox" SelectedIndex="0" Margin="0,0,0,10">
 					<ComboBoxItem Tag="8">8x8</ComboBoxItem>

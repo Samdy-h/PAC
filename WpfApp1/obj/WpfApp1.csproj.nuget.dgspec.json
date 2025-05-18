@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Heidy\\Universidad\\programacion\\WpfApp1\\WpfApp1.csproj": {}
+    "D:\\Heidy\\Universidad\\programacion\\Proyecto2!!\\WpfApp1\\WpfApp1.csproj": {}
   },
   "projects": {
-    "D:\\Heidy\\Universidad\\programacion\\WpfApp1\\WpfApp1.csproj": {
+    "D:\\Heidy\\Universidad\\programacion\\Proyecto2!!\\WpfApp1\\WpfApp1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Heidy\\Universidad\\programacion\\WpfApp1\\WpfApp1.csproj",
+        "projectUniqueName": "D:\\Heidy\\Universidad\\programacion\\Proyecto2!!\\WpfApp1\\WpfApp1.csproj",
         "projectName": "WpfApp1",
-        "projectPath": "D:\\Heidy\\Universidad\\programacion\\WpfApp1\\WpfApp1.csproj",
+        "projectPath": "D:\\Heidy\\Universidad\\programacion\\Proyecto2!!\\WpfApp1\\WpfApp1.csproj",
         "packagesPath": "C:\\Users\\YOLI\\.nuget\\packages\\",
-        "outputPath": "D:\\Heidy\\Universidad\\programacion\\WpfApp1\\obj\\",
+        "outputPath": "D:\\Heidy\\Universidad\\programacion\\Proyecto2!!\\WpfApp1\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

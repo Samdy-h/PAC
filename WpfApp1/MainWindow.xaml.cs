@@ -1,12 +1,31 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using System.Windows.Input;
+using Microsoft.Win32;
 
 namespace PixelArtEditor
 {
+    public class PixelArtData
+    {
+        public int GridSize { get; set; }
+        public int CanvasWidth { get; set; }
+        public int CanvasHeight { get; set; }
+        public List<PixelInfo> Pixels { get; set; } = new List<PixelInfo>();
+    }
+
+    public class PixelInfo
+    {
+        public int X { get; set; }
+        public int Y { get; set; }
+        public byte[] ColorBytes { get; set; }
+    }
+
     public partial class MainWindow : Window
     {
         private int currentGridSize = 8;
@@ -62,11 +81,9 @@ namespace PixelArtEditor
         {
             DrawingCanvas.Children.Clear();
 
-            // Calcular tamaño de celda para mantenerlas cuadradas
             cellWidth = (double)canvasWidth / currentGridSize;
             cellHeight = (double)canvasHeight / currentGridSize;
 
-            // Dibujar líneas de la cuadrícula
             for (int i = 0; i <= currentGridSize; i++)
             {
                 // Líneas verticales
@@ -114,7 +131,7 @@ namespace PixelArtEditor
             if (column < 0 || row < 0 || column >= currentGridSize || row >= currentGridSize)
                 return;
 
-            // Eliminar píxel existente en esta posición
+            // Eliminar píxel existente
             for (int i = DrawingCanvas.Children.Count - 1; i >= 0; i--)
             {
                 if (DrawingCanvas.Children[i] is Rectangle existingPixel &&
@@ -150,6 +167,104 @@ namespace PixelArtEditor
         private void ApplySizeButton_Click(object sender, RoutedEventArgs e)
         {
             UpdateCanvasSize();
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Filter = "Pixel Art Files (*.pw)|*.pw",
+                DefaultExt = ".pw"
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    PixelArtData data = new PixelArtData
+                    {
+                        GridSize = currentGridSize,
+                        CanvasWidth = canvasWidth,
+                        CanvasHeight = canvasHeight
+                    };
+
+                    foreach (var child in DrawingCanvas.Children)
+                    {
+                        if (child is Rectangle pixel && pixel.Fill is SolidColorBrush brush)
+                        {
+                            double left = Canvas.GetLeft(pixel);
+                            double top = Canvas.GetTop(pixel);
+
+                            data.Pixels.Add(new PixelInfo
+                            {
+                                X = (int)(left / cellWidth),
+                                Y = (int)(top / cellHeight),
+                                ColorBytes = new byte[] { brush.Color.R, brush.Color.G, brush.Color.B, brush.Color.A }
+                            });
+                        }
+                    }
+
+                    string json = JsonSerializer.Serialize(data);
+                    File.WriteAllText(saveFileDialog.FileName, json);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al guardar: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void LoadButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "Pixel Art Files (*.pw)|*.pw"
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    string json = File.ReadAllText(openFileDialog.FileName);
+                    PixelArtData data = JsonSerializer.Deserialize<PixelArtData>(json);
+
+                    // Actualizar UI
+                    currentGridSize = data.GridSize;
+                    canvasWidth = data.CanvasWidth;
+                    canvasHeight = data.CanvasHeight;
+
+                    CanvasWidthTextBox.Text = data.CanvasWidth.ToString();
+                    CanvasHeightTextBox.Text = data.CanvasHeight.ToString();
+
+                    // Redibujar grid
+                    RedrawGrid();
+
+                    // Dibujar píxeles
+                    foreach (var pixelInfo in data.Pixels)
+                    {
+                        Rectangle pixel = new Rectangle
+                        {
+                            Width = cellWidth,
+                            Height = cellHeight,
+                            Fill = new SolidColorBrush(Color.FromArgb(
+                                pixelInfo.ColorBytes[3],
+                                pixelInfo.ColorBytes[0],
+                                pixelInfo.ColorBytes[1],
+                                pixelInfo.ColorBytes[2])),
+                            Stroke = Brushes.Gray,
+                            StrokeThickness = 0.2
+                        };
+
+                        Canvas.SetLeft(pixel, pixelInfo.X * cellWidth);
+                        Canvas.SetTop(pixel, pixelInfo.Y * cellHeight);
+                        DrawingCanvas.Children.Add(pixel);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al cargar: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
     }
 }

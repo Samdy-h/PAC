@@ -17,3 +17,23 @@ C:\Users\Samir\Desktop\Nueva carpeta\Proyecto 2\WpfApp1\obj\Debug\net8.0-windows
 C:\Users\Samir\Desktop\Nueva carpeta\Proyecto 2\WpfApp1\obj\Debug\net8.0-windows\WpfApp1.pdb
 C:\Users\Samir\Desktop\Nueva carpeta\Proyecto 2\WpfApp1\obj\Debug\net8.0-windows\WpfApp1.genruntimeconfig.cache
 C:\Users\Samir\Desktop\Nueva carpeta\Proyecto 2\WpfApp1\obj\Debug\net8.0-windows\ref\WpfApp1.dll
+D:\Heidy\Universidad\programacion\Proyecto2!!\WpfApp1\obj\Debug\net8.0-windows\MainWindow.baml
+D:\Heidy\Universidad\programacion\Proyecto2!!\WpfApp1\obj\Debug\net8.0-windows\MainWindow.g.cs
+D:\Heidy\Universidad\programacion\Proyecto2!!\WpfApp1\obj\Debug\net8.0-windows\App.g.cs
+D:\Heidy\Universidad\programacion\Proyecto2!!\WpfApp1\obj\Debug\net8.0-windows\WpfApp1_MarkupCompile.cache
+D:\Heidy\Universidad\programacion\Proyecto2!!\WpfApp1\obj\Debug\net8.0-windows\WpfApp1.g.resources
+D:\Heidy\Universidad\programacion\Proyecto2!!\WpfApp1\obj\Debug\net8.0-windows\WpfApp1.GeneratedMSBuildEditorConfig.editorconfig
+D:\Heidy\Universidad\programacion\Proyecto2!!\WpfApp1\obj\Debug\net8.0-windows\WpfApp1.AssemblyInfoInputs.cache
+D:\Heidy\Universidad\programacion\Proyecto2!!\WpfApp1\obj\Debug\net8.0-windows\WpfApp1.AssemblyInfo.cs
+D:\Heidy\Universidad\programacion\Proyecto2!!\WpfApp1\obj\Debug\net8.0-windows\WpfApp1.csproj.CoreCompileInputs.cache
+D:\Heidy\Universidad\programacion\Proyecto2!!\WpfApp1\obj\Debug\net8.0-windows\WpfApp1.sourcelink.json
+D:\Heidy\Universidad\programacion\Proyecto2!!\WpfApp1\obj\Debug\net8.0-windows\WpfApp1.dll
+D:\Heidy\Universidad\programacion\Proyecto2!!\WpfApp1\obj\Debug\net8.0-windows\refint\WpfApp1.dll
+D:\Heidy\Universidad\programacion\Proyecto2!!\WpfApp1\obj\Debug\net8.0-windows\WpfApp1.pdb
+D:\Heidy\Universidad\programacion\Proyecto2!!\WpfApp1\bin\Debug\net8.0-windows\WpfApp1.exe
+D:\Heidy\Universidad\programacion\Proyecto2!!\WpfApp1\bin\Debug\net8.0-windows\WpfApp1.deps.json
+D:\Heidy\Universidad\programacion\Proyecto2!!\WpfApp1\bin\Debug\net8.0-windows\WpfApp1.runtimeconfig.json
+D:\Heidy\Universidad\programacion\Proyecto2!!\WpfApp1\bin\Debug\net8.0-windows\WpfApp1.dll
+D:\Heidy\Universidad\programacion\Proyecto2!!\WpfApp1\bin\Debug\net8.0-windows\WpfApp1.pdb
+D:\Heidy\Universidad\programacion\Proyecto2!!\WpfApp1\obj\Debug\net8.0-windows\WpfApp1.genruntimeconfig.cache
+D:\Heidy\Universidad\programacion\Proyecto2!!\WpfApp1\obj\Debug\net8.0-windows\ref\WpfApp1.dll
