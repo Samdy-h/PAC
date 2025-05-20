@@ -14,8 +14,6 @@ namespace PixelArtEditor
     public class PixelArtData
     {
         public int GridSize { get; set; }
-        public int CanvasWidth { get; set; }
-        public int CanvasHeight { get; set; }
         public List<PixelInfo> Pixels { get; set; } = new List<PixelInfo>();
     }
 
@@ -28,82 +26,131 @@ namespace PixelArtEditor
 
     public partial class MainWindow : Window
     {
-        private int currentGridSize = 8;
+        private int currentGridSize = 16;
         private double cellWidth;
         private double cellHeight;
         private Color currentColor = Colors.Black;
-        private int canvasWidth = 512;
-        private int canvasHeight = 512;
+        private const int CanvasSize = 512; // Tamaño fijo del canvas
 
         public MainWindow()
         {
             InitializeComponent();
             InitializeGrid();
-
-            GridSizeComboBox.SelectionChanged += GridSizeComboBox_SelectionChanged;
             DrawingCanvas.MouseLeftButtonDown += DrawingCanvas_MouseLeftButtonDown;
             DrawingCanvas.MouseMove += DrawingCanvas_MouseMove;
         }
 
         private void InitializeGrid()
         {
-            UpdateCanvasSize();
+            DrawingCanvas.Width = CanvasSize;
+            DrawingCanvas.Height = CanvasSize;
+            RedrawGrid();
         }
 
-        private void UpdateCanvasSize()
+        private void OpenSizeDialog_Click(object sender, RoutedEventArgs e)
         {
-            if (int.TryParse(CanvasWidthTextBox.Text, out int width) &&
-                int.TryParse(CanvasHeightTextBox.Text, out int height) &&
-                width > 0 && height > 0)
+            // Crear ventana de diálogo
+            var dialog = new Window
             {
-                canvasWidth = width;
-                canvasHeight = height;
+                Title = "Cambiar tamaño de cuadrícula",
+                Width = 300,
+                Height = 150,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                Owner = this,
+                ResizeMode = ResizeMode.NoResize
+            };
 
-                DrawingCanvas.Width = canvasWidth;
-                DrawingCanvas.Height = canvasHeight;
-                CanvasBorder.Width = canvasWidth;
-                CanvasBorder.Height = canvasHeight;
+            // Crear contenido del diálogo
+            var stackPanel = new StackPanel { Margin = new Thickness(20) };
 
-                RedrawGrid();
-            }
-        }
-
-        private void GridSizeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (GridSizeComboBox.SelectedItem is ComboBoxItem selectedItem)
+            var textBlock = new TextBlock
             {
-                currentGridSize = int.Parse(selectedItem.Tag.ToString());
-                RedrawGrid();
-            }
+                Text = "Tamaño de la cuadrícula (1-256):",
+                Margin = new Thickness(0, 0, 0, 10)
+            };
+
+            var textBox = new TextBox
+            {
+                Text = currentGridSize.ToString(),
+                Width = 100,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                MaxLength = 3
+            };
+
+            var button = new Button
+            {
+                Content = "Aplicar",
+                Width = 80,
+                Margin = new Thickness(0, 15, 0, 0),
+                HorizontalAlignment = HorizontalAlignment.Center,
+                Padding = new Thickness(5)
+            };
+
+            button.Click += (s, args) =>
+            {
+                if (int.TryParse(textBox.Text, out int size) && size > 0 && size <= 256)
+                {
+                    currentGridSize = size;
+                    RedrawGrid();
+                    dialog.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Por favor ingrese un número válido entre 1 y 256",
+                                  "Error",
+                                  MessageBoxButton.OK,
+                                  MessageBoxImage.Error);
+                    textBox.Focus();
+                    textBox.SelectAll();
+                }
+            };
+
+            // Manejar Enter en el TextBox
+            textBox.KeyDown += (s, args) =>
+            {
+                if (args.Key == Key.Enter)
+                {
+                    button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                }
+            };
+
+            stackPanel.Children.Add(textBlock);
+            stackPanel.Children.Add(textBox);
+            stackPanel.Children.Add(button);
+
+            dialog.Content = stackPanel;
+            dialog.ShowDialog();
+            textBox.Focus();
+            textBox.SelectAll();
         }
 
         private void RedrawGrid()
         {
             DrawingCanvas.Children.Clear();
+            cellWidth = (double)CanvasSize / currentGridSize;
+            cellHeight = (double)CanvasSize / currentGridSize;
 
-            cellWidth = (double)canvasWidth / currentGridSize;
-            cellHeight = (double)canvasHeight / currentGridSize;
-
+            // Dibujar líneas de la cuadrícula
             for (int i = 0; i <= currentGridSize; i++)
             {
                 // Líneas verticales
-                Line verticalLine = new Line
+                var verticalLine = new Line
                 {
                     X1 = i * cellWidth,
                     Y1 = 0,
                     X2 = i * cellWidth,
-                    Y2 = canvasHeight,
+                    Y2 = CanvasSize,
                     Stroke = Brushes.LightGray,
                     StrokeThickness = 0.5
                 };
                 DrawingCanvas.Children.Add(verticalLine);
 
                 // Líneas horizontales
-                Line horizontalLine = new Line
+                var horizontalLine = new Line
                 {
                     X1 = 0,
                     Y1 = i * cellHeight,
-                    X2 = canvasWidth,
+                    X2 = CanvasSize,
                     Y2 = i * cellHeight,
                     Stroke = Brushes.LightGray,
                     StrokeThickness = 0.5
@@ -120,7 +167,9 @@ namespace PixelArtEditor
         private void DrawingCanvas_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
+            {
                 DrawPixel(e.GetPosition(DrawingCanvas));
+            }
         }
 
         private void DrawPixel(Point position)
@@ -131,7 +180,7 @@ namespace PixelArtEditor
             if (column < 0 || row < 0 || column >= currentGridSize || row >= currentGridSize)
                 return;
 
-            // Eliminar píxel existente
+            // Eliminar píxel existente si existe
             for (int i = DrawingCanvas.Children.Count - 1; i >= 0; i--)
             {
                 if (DrawingCanvas.Children[i] is Rectangle existingPixel &&
@@ -144,7 +193,7 @@ namespace PixelArtEditor
             }
 
             // Crear nuevo píxel
-            Rectangle pixel = new Rectangle
+            var pixel = new Rectangle
             {
                 Width = cellWidth,
                 Height = cellHeight,
@@ -164,11 +213,6 @@ namespace PixelArtEditor
             RedrawGrid();
         }
 
-        private void ApplySizeButton_Click(object sender, RoutedEventArgs e)
-        {
-            UpdateCanvasSize();
-        }
-
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog
@@ -183,9 +227,7 @@ namespace PixelArtEditor
                 {
                     PixelArtData data = new PixelArtData
                     {
-                        GridSize = currentGridSize,
-                        CanvasWidth = canvasWidth,
-                        CanvasHeight = canvasHeight
+                        GridSize = currentGridSize
                     };
 
                     foreach (var child in DrawingCanvas.Children)
@@ -230,11 +272,6 @@ namespace PixelArtEditor
 
                     // Actualizar UI
                     currentGridSize = data.GridSize;
-                    canvasWidth = data.CanvasWidth;
-                    canvasHeight = data.CanvasHeight;
-
-                    CanvasWidthTextBox.Text = data.CanvasWidth.ToString();
-                    CanvasHeightTextBox.Text = data.CanvasHeight.ToString();
 
                     // Redibujar grid
                     RedrawGrid();

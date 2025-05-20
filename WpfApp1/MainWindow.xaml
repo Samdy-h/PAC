@@ -3,52 +3,28 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Pixel Art Editor" Height="600" Width="800">
 	<Grid>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="150"/>
-			<ColumnDefinition Width="*"/>
-		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
 
-		<!-- Panel de control izquierdo -->
-		<Border Grid.Column="0" Background="#f0f0f0" Padding="10">
-			<StackPanel>
-				<!-- Tamaño de cuadrícula -->
-				<TextBlock Text="Tamaño de cuadrícula:" FontWeight="Bold" Margin="0,0,0,10"/>
-				<Button Content="Guardar" Margin="0,10" Padding="10,5" Click="SaveButton_Click"/>
-				<Button Content="Abrir" Margin="0,10" Padding="10,5" Click="LoadButton_Click"/>
+		<!-- Barra de herramientas superior -->
+		<Border Grid.Row="0" Background="#f0f0f0" Padding="10">
+			<StackPanel Orientation="Horizontal">
+				<!-- Botón para cambiar tamaño -->
+				<Button Content="Tamaño" Padding="10,5" Margin="0,0,10,0" Click="OpenSizeDialog_Click"/>
 
-
-				<ComboBox x:Name="GridSizeComboBox" SelectedIndex="0" Margin="0,0,0,10">
-					<ComboBoxItem Tag="8">8x8</ComboBoxItem>
-					<ComboBoxItem Tag="16">16x16</ComboBoxItem>
-					<ComboBoxItem Tag="32">32x32</ComboBoxItem>
-					<ComboBoxItem Tag="64">64x64</ComboBoxItem>
-					<ComboBoxItem Tag="128">128x128</ComboBoxItem>
-					<ComboBoxItem Tag="256">256x256</ComboBoxItem>
-				</ComboBox>
-
-				<!-- Tamaño del Canvas -->
-				<TextBlock Text="Tamaño del Canvas:" FontWeight="Bold" Margin="0,10,0,5"/>
-
-				<StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-					<TextBlock Text="Ancho:" VerticalAlignment="Center" Width="50"/>
-					<TextBox x:Name="CanvasWidthTextBox" Text="512" Width="50"/>
-				</StackPanel>
-
-				<StackPanel Orientation="Horizontal" Margin="0,0,0,20">
-					<TextBlock Text="Alto:" VerticalAlignment="Center" Width="50"/>
-					<TextBox x:Name="CanvasHeightTextBox" Text="512" Width="50"/>
-				</StackPanel>
-
-				<!-- Botones -->
-				<Button Content="Aplicar Tamaño" Margin="0,10" Padding="10,5" Click="ApplySizeButton_Click"/>
-				<Button Content="Borrar todo" Margin="0,10" Padding="10,5" Click="ClearButton_Click"/>
+				<!-- Otros botones -->
+				<Button Content="Guardar" Padding="10,5" Margin="0,0,10,0" Click="SaveButton_Click"/>
+				<Button Content="Abrir" Padding="10,5" Margin="0,0,10,0" Click="LoadButton_Click"/>
+				<Button Content="Borrar" Padding="10,5" Click="ClearButton_Click"/>
 			</StackPanel>
 		</Border>
 
-		<!-- Área de dibujo derecha con tamaño dinámico -->
-		<ScrollViewer Grid.Column="1" Margin="10" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-			<Border x:Name="CanvasBorder" Background="White">
-				<Canvas x:Name="DrawingCanvas" Background="White">
+		<!-- Área de dibujo -->
+		<ScrollViewer Grid.Row="1" Margin="10" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+			<Border x:Name="CanvasBorder" Background="White" Width="512" Height="512">
+				<Canvas x:Name="DrawingCanvas" Background="White" Width="512" Height="512">
 					<!-- La cuadrícula se generará dinámicamente -->
 				</Canvas>
 			</Border>
