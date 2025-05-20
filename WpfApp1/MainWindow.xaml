@@ -1,33 +1,70 @@
 ﻿<Window x:Class="PixelArtEditor.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Pixel Art Editor" Height="600" Width="800">
+        Title="Pixel Art Editor" Height="600" Width="900">
 	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="*"/>
-		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="200"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
 
-		<!-- Barra de herramientas superior -->
-		<Border Grid.Row="0" Background="#f0f0f0" Padding="10">
-			<StackPanel Orientation="Horizontal">
-				<!-- Botón para cambiar tamaño -->
-				<Button Content="Tamaño" Padding="10,5" Margin="0,0,10,0" Click="OpenSizeDialog_Click"/>
+		<!-- Panel izquierdo (consola de comandos) -->
+		<Grid Grid.Column="0">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
 
-				<!-- Otros botones -->
-				<Button Content="Guardar" Padding="10,5" Margin="0,0,10,0" Click="SaveButton_Click"/>
-				<Button Content="Abrir" Padding="10,5" Margin="0,0,10,0" Click="LoadButton_Click"/>
-				<Button Content="Borrar" Padding="10,5" Click="ClearButton_Click"/>
-			</StackPanel>
-		</Border>
-
-		<!-- Área de dibujo -->
-		<ScrollViewer Grid.Row="1" Margin="10" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-			<Border x:Name="CanvasBorder" Background="White" Width="512" Height="512">
-				<Canvas x:Name="DrawingCanvas" Background="White" Width="512" Height="512">
-					<!-- La cuadrícula se generará dinámicamente -->
-				</Canvas>
+			<!-- Área de visualización de texto -->
+			<Border Grid.Row="0" BorderBrush="Gray" BorderThickness="1" Margin="10" Background="White">
+				<ScrollViewer x:Name="ConsoleScrollViewer">
+					<TextBlock x:Name="TextDisplay" Margin="5" TextWrapping="Wrap"
+                              Foreground="Black" FontFamily="Consolas"/>
+				</ScrollViewer>
 			</Border>
-		</ScrollViewer>
+
+			<!-- Área de entrada de comandos -->
+			<StackPanel Grid.Row="1" Margin="10,0,10,10">
+				<TextBox x:Name="TextInput" Height="60" TextWrapping="Wrap"
+                         VerticalScrollBarVisibility="Auto" AcceptsReturn="True"
+                         VerticalAlignment="Bottom" FontFamily="Consolas"
+                         Foreground="White" Background="#FF333333" CaretBrush="White"
+                         KeyDown="TextInput_KeyDown"/>
+				<Button Content="Ejecutar" Margin="0,5,0,0" Padding="5"
+                        Click="AddText_Click" Background="#FF555555" Foreground="White"
+                        IsDefault="False" IsCancel="False"/>
+			</StackPanel>
+		</Grid>
+
+		<!-- Panel derecho (editor de píxeles) -->
+		<Grid Grid.Column="1">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+
+			<!-- Barra de herramientas -->
+			<Border Grid.Row="0" Background="#f0f0f0" Padding="10">
+				<StackPanel Orientation="Horizontal">
+					<Button Content="Tamaño" Padding="10,5" Margin="0,0,10,0"
+                            Click="OpenSizeDialog_Click" Background="#FF555555" Foreground="White"/>
+					<Button Content="Guardar" Padding="10,5" Margin="0,0,10,0"
+                            Click="SaveButton_Click" Background="#FF555555" Foreground="White"/>
+					<Button Content="Abrir" Padding="10,5" Margin="0,0,10,0"
+                            Click="LoadButton_Click" Background="#FF555555" Foreground="White"/>
+					<Button Content="Borrar" Padding="10,5"
+                            Click="ClearButton_Click" Background="#FF555555" Foreground="White"/>
+				</StackPanel>
+			</Border>
+
+			<!-- Área de dibujo -->
+			<ScrollViewer Grid.Row="1" Margin="10" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+				<Border x:Name="CanvasBorder" Background="White" Width="512" Height="512">
+					<Canvas x:Name="DrawingCanvas" Background="White" Width="512" Height="512">
+						<!-- La cuadrícula se generará dinámicamente -->
+					</Canvas>
+				</Border>
+			</ScrollViewer>
+		</Grid>
 	</Grid>
 </Window>
